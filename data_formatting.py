@@ -1,6 +1,5 @@
 #%% IMPORTS
 import geopandas as gp
-from numpy import row_stack
 
 #%% DATA
 copenhagenTrees = gp.read_file('data_raw/copenhagen_trees.gpkg')
