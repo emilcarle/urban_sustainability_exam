@@ -1,5 +1,7 @@
 #%% IMPORTS
 import geopandas as gp
+from pyparsing import string_end
+from unidecode import unidecode
 
 #%% DATA
 copenhagenTrees = gp.read_file('data_raw/copenhagen_trees.gpkg')
@@ -8,7 +10,7 @@ frederiksbergStreetTrees = gp.read_file('data_raw/frederiksberg_trees.gpkg')
 
 #%% CLEANING DATAFRAMES
 copenhagenStreetTrees = copenhagenTrees.loc[
-    (copenhagenTrees['kategori'] == 'gadetræ') & (copenhagenTrees['busk_trae'] == 'Træ')].copy(deep=True)
+    (copenhagenTrees['kategori'] == 'gadetræ') & (copenhagenTrees['busk_trae'] == 'Træ')].copy(deep = True)
 
 copenhagenStreetTrees["municipality"] = 'copenhagen'
 
@@ -135,8 +137,63 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'species'] = 'Crataegus'
     elif 'Ikke registreret' in str(row['species']):
         streetTrees.at[i, 'species'] = 'not_registered'
-    
-print(streetTrees['species'].value_counts())
 
-#%% Export to file
+#%% EXPORT TO FILE
 streetTrees.to_file('data_created/street_trees.gpkg')
+
+#%% Unused
+# def rename_species(GeoDataFrame, listOfSpecies):
+#    for string in listOfSpecies:
+#        for i, row in GeoDataFrame.iterrows():
+#            if string in unidecode(unidecode(str(row['species'])), "utf-8"):
+#                GeoDataFrame.at[i, 'species'] = string
+
+# rename_species(streetTrees, [
+    'Tilia', 
+    'Acer'
+    'Alnus'
+    'Betula',
+    'Robinia',
+    'Ulmus',
+    'Sorbus',
+    'Fraxinus',
+    'Malus',
+    'Quercus',
+    'Carpinus',
+    'Pinus',
+    'Platanus',
+    'Crataegus',
+    'Pyrus',
+    'Prunus',
+    'Corylus'
+    'Larix',
+    'Aesculus',
+    'Populus',
+    'Fagus',
+    'Thuja',
+    'Ginkgo',
+    'Taxus',
+    'Picea',
+    'Juniperus',
+    'Castanea',
+    'Tsuga',
+    'Ilex',
+    'Ailanthus',
+    'Gleditsia',
+    'Laburnum',
+    'Metasequoia',
+    'Liquidambar',
+    'Styphnolobium',
+    'Liriodendron',
+    'Paulownia',
+    'Koelreuteria',
+    'Cedrus',
+    'Catalpa',
+    'Eleagnus',
+    'Taxodium',
+    'Nothofagus',
+    'Cercidiphyllum',
+    'Salix',
+    'Juglans',
+    'Pterocarya',
+    'Crataegus'])
