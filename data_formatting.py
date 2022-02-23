@@ -12,6 +12,8 @@ frederiksbergStreetTrees = gp.read_file('data_raw/frederiksberg_trees.gpkg')
 copenhagenStreetTrees = copenhagenTrees.loc[
     (copenhagenTrees['kategori'] == 'gadetræ') & (copenhagenTrees['busk_trae'] == 'Træ')].copy(deep = True)
 
+#remove NA's
+
 copenhagenStreetTrees["municipality"] = 'copenhagen'
 
 copenhagenStreetTrees = copenhagenStreetTrees.filter(['municipality', 'traeart', 'planteaar', 'vejnavn', 'bydelsnavn', 'stammeomfang', 'omgivelse', 'geometry'])
@@ -28,6 +30,8 @@ copenhagenStreetTrees.rename(columns = {
 frederiksbergStreetTrees["municipality"] = 'frederiksberg'
 
 frederiksbergStreetTrees = frederiksbergStreetTrees.filter(['art_sort', 'municipality', 'vejnavn', 'geometry'])
+
+#remove NA's
 
 frederiksbergStreetTrees.rename(columns = {
     'art_sort':'species',
@@ -142,13 +146,13 @@ for i, row in streetTrees.iterrows():
 streetTrees.to_file('data_created/street_trees.gpkg')
 
 #%% Unused
-# def rename_species(GeoDataFrame, listOfSpecies):
-#    for string in listOfSpecies:
-#        for i, row in GeoDataFrame.iterrows():
-#            if string in unidecode(unidecode(str(row['species'])), "utf-8"):
-#                GeoDataFrame.at[i, 'species'] = string
+def rename_species(GeoDataFrame, listOfSpecies):
+    for string in listOfSpecies:
+        for i, row in GeoDataFrame.iterrows():
+            if string in unidecode(unidecode(str(row['species'])), "utf-8"):
+                GeoDataFrame.at[i, 'species'] = string
 
-# rename_species(streetTrees, [
+rename_species(streetTrees, [
     'Tilia', 
     'Acer'
     'Alnus'

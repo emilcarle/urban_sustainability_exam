@@ -35,10 +35,13 @@ pieOtherGenusFreq = px.pie(streetTreesOtherSpecies,
     title = '''Distribution of Tree Genus' within "Other Genus" category''')
 
 pieOtherGenusFreq.show()
-#%% 
+#%% BAR CHART OF TREE GENUS
+barGenusFreq = px.bar(streetTrees, 
+    x = 'species', 
+    y = 'single_tree', 
+    title = 'Distribution of Tree Genus',
+    color = 'municipality')
 
-fig = px.bar(streetTrees, x = 'species_large', y = 'single_tree', color = 'municipality')
-fig.show()
+barGenusFreq.show()
 
-
-# %%
+# %% CREATE BAR DIAGRAMS WITH BARS SORTED BY AMOUNT OF TREES
