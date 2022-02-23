@@ -8,7 +8,7 @@ copenhagenTrees = gp.read_file('data_raw/copenhagen_trees.gpkg')
 
 frederiksbergStreetTrees = gp.read_file('data_raw/frederiksberg_trees.gpkg')
 
-allergenicityIndex = pd.read_csv('approach/index_allergenetic_trees.csv', sep = ';')
+allergenicityIndex = pd.read_csv('allergenetic/index_allergenetic_trees.csv', sep = ';')
 
 #%% CLEANING AND MERGING DATAFRAMES
 copenhagenStreetTrees = copenhagenTrees.loc[
@@ -140,20 +140,22 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'genus'] = 'Juglans'
     elif 'Pterocarya' in str(row['genus']):
         streetTrees.at[i, 'genus'] = 'Pterocarya'
-    elif 'Crataegus' in str(row['genus']) or 'Crateagus' in str(row['genus']):
+    elif 'Crataegus' in str(row['genus']) or 'crataegus' in str(row['genus']) or 'Crateagus' in str(row['genus']):
         streetTrees.at[i, 'genus'] = 'Crataegus'
     elif 'Ikke registreret' in str(row['genus']):
         streetTrees.at[i, 'genus'] = 'not_registered'
 
 #%% JOINING ALLERGENICITY INDEX WITH STREETTREES 
-streetTrees = merge(streetTrees, )
-
-streetTrees.merge(country_names, on = 'iso_a3')
+streetTrees = streetTrees.merge(allergenicityIndex, on = 'genus', how = 'left')
 
 #%% EXPORT TO FILE
 streetTrees.to_file('data_created/street_trees.gpkg')
 
-#%% ENDLESS ATTEMPTS AT BETTER RENAMING FUNCTION
+#%% ENDLESS ATTEMPTS AT A BETTER RENAMING FUNCTION
+for string in listOfgenus:
+        if string in streetTrees['genus']:
+            streetTrees['genus'] = string
+
 def rename_genus(listOfgenus):
     global streetTrees
     for string in listOfgenus:
