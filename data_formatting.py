@@ -1,6 +1,5 @@
 #%% IMPORTS
 import geopandas as gp
-from pyparsing import string_end
 from unidecode import unidecode
 
 #%% DATA
@@ -8,11 +7,9 @@ copenhagenTrees = gp.read_file('data_raw/copenhagen_trees.gpkg')
 
 frederiksbergStreetTrees = gp.read_file('data_raw/frederiksberg_trees.gpkg')
 
-#%% CLEANING DATAFRAMES
+#%% CLEANING AND MERGING DATAFRAMES
 copenhagenStreetTrees = copenhagenTrees.loc[
     (copenhagenTrees['kategori'] == 'gadetræ') & (copenhagenTrees['busk_trae'] == 'Træ')].copy(deep = True)
-
-#remove NA's
 
 copenhagenStreetTrees["municipality"] = 'copenhagen'
 
@@ -27,25 +24,31 @@ copenhagenStreetTrees.rename(columns = {
     'omgivelse':'surroundings'}, 
     inplace=True)
 
-frederiksbergStreetTrees["municipality"] = 'frederiksberg'
+frederiksbergStreetTrees['municipality'] = 'frederiksberg'
 
 frederiksbergStreetTrees = frederiksbergStreetTrees.filter(['art_sort', 'municipality', 'vejnavn', 'geometry'])
-
-#remove NA's
 
 frederiksbergStreetTrees.rename(columns = {
     'art_sort':'species',
     'vejnavn':'street'}, 
     inplace = True)
 
-#%% MERGING GEODATAFRAMES
 streetTrees = copenhagenStreetTrees.append(frederiksbergStreetTrees)
+
+streetTrees['species'] = streetTrees['species'].fillna('not_registered')
+
+streetTrees = streetTrees.astype({"species": str})
+
+streetTrees['species'] = streetTrees['species'].apply(lambda x: unidecode(x, 'utf-8'))
+
+#%% JOINING ALLERGENICITY INDEX WITH STREETTREES 
+#when Janis makes the file write code here...
 
 #%% STANDARDISING/RENAMING IN 'species' COLUMN
 for i, row in streetTrees.iterrows():
     if 'Tilia' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Tilia'
-    elif 'Acer' in str(row['species']) or 'Ácer' in str(row['species']):
+    elif 'Acer' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Acer'
     elif 'Alnus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Alnus'
@@ -55,9 +58,9 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'species'] = 'Robinia'
     elif 'Ulmus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Ulmus'
-    elif 'Sorbus' in str(row['species']) or 'Sórbus' in str(row['species']):
+    elif 'Sorbus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Sorbus'
-    elif 'Fraxinus' in str(row['species']) or 'Fráxinus' in str(row['species']):
+    elif 'Fraxinus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Fraxinus'
     elif 'Malus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Malus'
@@ -73,7 +76,7 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'species'] = 'Crataegus'
     elif 'Pyrus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Pyrus'
-    elif 'Prunus' in str(row['species']) or 'Prúnus' in str(row['species']):
+    elif 'Prunus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Prunus'
     elif 'Corylus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Corylus'
@@ -83,13 +86,13 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'species'] = 'Aesculus'
     elif 'Populus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Populus'
-    elif 'Fagus' in str(row['species']) or 'Fágus' in str(row['species']):
+    elif 'Fagus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Fagus'
     elif 'Thuja' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Thuja'
     elif 'Ginkgo' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Ginkgo'
-    elif 'Taxus' in str(row['species']) or 'Táxus' in str(row['species']):
+    elif 'Taxus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Taxus'
     elif 'Picea' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Picea'
@@ -113,31 +116,31 @@ for i, row in streetTrees.iterrows():
         streetTrees.at[i, 'species'] = 'Liquidambar'
     elif 'Styphnolobium' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Styphnolobium'
-    elif 'Liriodendron' in str(row['species']) or 'Liriodéndron' in str(row['species']):
+    elif 'Liriodendron' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Liriodendron'
-    elif 'Paulównia' in str(row['species']):
+    elif 'Paulownia' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Paulownia'
     elif 'Koelreuteria' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Koelreuteria'
-    elif 'Cedrús' in str(row['species']):
+    elif 'Cedrus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Cedrus'
-    elif 'Catálpa' in str(row['species']):
+    elif 'Catalpa' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Catalpa'
     elif 'Eleagnus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Eleagnus'
     elif 'Taxodium' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Taxodium'
-    elif 'Nothofágus' in str(row['species']):
+    elif 'Nothofagus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Nothofagus'
-    elif 'Cercidiphýllum' in str(row['species']):
+    elif 'Cercidiphyllum' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Cercidiphyllum'
     elif 'Salix' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Salix'
     elif 'Juglans' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Juglans'
-    elif 'Pterocárya' in str(row['species']):
+    elif 'Pterocarya' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Pterocarya'
-    elif 'Crataegus' in str(row['species']) or 'Crateagus' in str(row['species']) or 'crataegus' in str(row['species']):
+    elif 'Crataegus' in str(row['species']) or 'Crateagus' in str(row['species']):
         streetTrees.at[i, 'species'] = 'Crataegus'
     elif 'Ikke registreret' in str(row['species']):
         streetTrees.at[i, 'species'] = 'not_registered'
@@ -145,14 +148,37 @@ for i, row in streetTrees.iterrows():
 #%% EXPORT TO FILE
 streetTrees.to_file('data_created/street_trees.gpkg')
 
-#%% Unused
-def rename_species(GeoDataFrame, listOfSpecies):
+#%% ENDLESS ATTEMPTS AT BETTER RENAMING FUNCTION
+def rename_species(listOfSpecies):
+    global streetTrees
     for string in listOfSpecies:
-        for i, row in GeoDataFrame.iterrows():
-            if string in unidecode(unidecode(str(row['species'])), "utf-8"):
-                GeoDataFrame.at[i, 'species'] = string
+        if string in streetTrees['species']:
+            streetTrees['species'] = string
 
-rename_species(streetTrees, [
+def rename_species(listOfSpecies):
+    global streetTrees
+    for string in listOfSpecies:
+        streetTrees[streetTrees['species'].str.contains(string)] = string
+
+def rename_species(listOfSpecies):
+    global streetTrees
+    for string in listOfSpecies:
+        if streetTrees.loc[streetTrees['species'].str.contains(string)]:
+            streetTrees['species'] = string
+
+def rename_species(listOfSpecies):
+    global streetTrees
+    for string in listOfSpecies:
+        streetTrees.where(cond = streetTrees['species'].str.contains(string), 
+        other = string)
+
+def rename_species(listOfSpecies):
+    global streetTrees
+    for string in listOfSpecies:
+        streetTrees.mask(cond = streetTrees['species'].str.contains(string), 
+        other = string)
+
+rename_species([
     'Tilia', 
     'Acer'
     'Alnus'

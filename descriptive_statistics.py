@@ -1,7 +1,6 @@
 #%% IMPORTS
 import geopandas as gp
 import plotly.express as px
-import plotly.figure_factory as ff
 
 #%% DATA
 streetTrees = gp.read_file('data_created/street_trees.gpkg')
