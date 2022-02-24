@@ -1,31 +1,39 @@
-﻿family;genus;allergenecity_index
+﻿Family;Latin name;Allergenecity index
 Altingiaceae;Liquidambar;1
 Aquifoliaceae;Ilex;1
-Betulaceae;Alnus;4
-Betulaceae;Betula;5
-Betulaceae;Carpinus;1
-Betulaceae;Corylus;4
+Betulaceae;Alnus alnobetula;4
+Betulaceae;Alnus glutinosa;4
+Betulaceae;Alnus incana;4
+Betulaceae;Betula pendula;5
+Betulaceae;Carpinus betulus;1
+Betulaceae;Coryllus avelana;4
+Betulaceae;Coryllus colurna;4
+Bignoniaceae;Catalpa;2
 Cercidiphyllaceae;Cercidiphyllum;0
 Cupressaceae;Juniperus;2
 Cupressaceae;Metasequoia;0
+Cupressaceae;Taxodium;0
+Cupressaceae;Thuja;3
 Elaeagnaceae;Eleagnus;0
 Fabaceae;Gleditsia;1
 Fabaceae;Laburnum;0
 Fabaceae;Robinia;1
 Fabaceae;Styphnolobium;0
 Fagaceae;Castanea;2
-Fagaceae;Fagus;2
-Fagaceae;Quercus;2
-Gingkoaceae;Gingko;0
+Fagaceae;Fagus sylvatica;2
+Fagaceae;Quercus petrae;2
+Fagaceae;Quercus robur;2
+Gingkoaceae;Gingko biloba;0
 Juglandaceae;Juglans;4
 Juglandaceae;Pterocarya;1
 Magnoliaceae;Liriodendron;1
 Malvaceae;Tilia;1
-Nothofagaceae;Nothofagus;0
-Oleacea;Fraxinus;2
+Nothofagaceae;Notohofagus;0
+Oleacea;Fraxinus excelsior;2
 Paulowniaceae;Paulownia;0
 Pinaceae;Cedrus;3
-Pinaceae;Picea;0
+Pinaceae;Larix;0
+Pinaceae;Piceae;0
 Pinaceae;Pinus;1
 Pinaceae;Tsuga ;0
 Platanaceae;Platanus;1
@@ -34,15 +42,12 @@ Rosaceae;Malus;1
 Rosaceae;Prunus;1
 Rosaceae;Pyrus;1
 Rosaceae;Sorbus;1
-Salicaceae;Populus;3
+Salicaceae;Populus nigra;3
+Salicaceae;Populus tremula;3
 Salicaceae;Salix ;1
 Sapindaceae;Acer;1
 Sapindaceae;Aesculus;0
 Sapindaceae;Koelreuteria;0
 Simaroubaceae;Ailanthus;1
 Taxaceae;Taxus;0
-Ulmaceae;Ulmus;2
-Pinaceae;Larix;0
-Cupressaceae;Thuja;3
-Cupressaceae;Taxodium;0
-Bignoniaceae;Catalpa;2
+Ulmaceae;Ulmus minor;2
