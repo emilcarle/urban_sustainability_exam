@@ -1,6 +1,7 @@
 #%% IMPORTS
 import geopandas as gp
 import plotly.express as px
+import kaleido
 
 #%% DATA
 streetTrees = gp.read_file('data_created/street_trees.gpkg')
@@ -35,12 +36,15 @@ pieOtherGenusFreq = px.pie(streetTreesOthergenus,
 
 pieOtherGenusFreq.show()
 #%% BAR CHART OF TREE GENUS
-barGenusFreq = px.bar(streetTrees, 
-    x = 'genus', 
+streetTreesGroupGenus = streetTrees.groupby('genus').sum()
+
+barGenusFreq = px.bar(streetTreesGroupGenus, 
+    orientation = 'h',
     y = 'single_tree', 
-    title = 'Distribution of Tree Genus',
-    color = 'municipality')
+    title = 'Distribution of Tree Genus').update_xaxes(categoryorder = 'total descending')
 
 barGenusFreq.show()
+
+barGenusFreq.write_image('descriptive_statistics/barGenusFreq.png', engine = 'kaleido')
 
 # %% CREATE BAR DIAGRAMS WITH BARS SORTED BY AMOUNT OF TREES

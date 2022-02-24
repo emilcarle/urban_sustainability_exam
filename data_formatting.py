@@ -152,7 +152,7 @@ streetTrees = streetTrees.merge(allergenicityIndex, on = 'genus', how = 'left')
 streetTrees.to_file('data_created/street_trees.gpkg')
 
 #%% ENDLESS ATTEMPTS AT A BETTER RENAMING FUNCTION
-for string in listOfgenus:
+for string in listOfGenus:
         if string in streetTrees['genus']:
             streetTrees['genus'] = string
 
