@@ -47,7 +47,7 @@ barGenusFreq = px.bar(streetTreesGroupInsignificantGenus,
     y = 'single_tree', 
     color = 'is_aggregated',
     labels = dict(genus_large = 'Tree genera', single_tree = 'Number of trees'),
-    color_discrete_sequence = ['blue', 'green'])
+    color_discrete_sequence = ['grey', 'darkgrey'])
     
 barGenusFreq = barGenusFreq.update_xaxes(categoryorder = 'array', categoryarray = ['Other genera'], type = 'category')
 
@@ -75,3 +75,10 @@ barAllergenecityFreq = barAllergenecityFreq.update_yaxes(tickvals = [0, 500, 100
 barAllergenecityFreq.show()
 
 barAllergenecityFreq.write_image('descriptive_statistics/barAllergenecityFreq.png', scale = 5)
+
+#%% ALLERGENECITY .CSV
+streetTreesAllergenecity = streetTrees.groupby('allergenecity_index').sum().reset_index()
+
+streetTreesAllergenecity = streetTreesAllergenecity.drop('freq_genus', axis = 1).rename(columns = {'single_tree':'count'})
+
+streetTreesAllergenecity.to_csv('descriptive_statistics/allergenecity_tree_count.csv')
