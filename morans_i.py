@@ -29,8 +29,25 @@ import numpy as np
 
 
 
-# Vector Version
-import fiona
-shape = fiona.open("vector_wo_nas.shp")
-print(shape.schema)
+# Gal Version
+import pysal
+import pandas as pd
+
+# how
+# f = pysal.open(pysal.examples.get_path("vector_wo_nas.txt"))
+# y = np.array(f.by_col['DN'])
+
+w = pd.read_table("vector_wo_nas.gal", encoding="iso-8859-1")
+# Create the matrix of weigthts 
+
+# Calculating mi
+mi = pysal.Moran(y, w, two_tailed=False)
+
+# printing Moran's I results 
+#"%.3f"%mi.I
+#"%.5f"%mi.p_norm
+
+
+
+
 
