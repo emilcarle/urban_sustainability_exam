@@ -1,39 +1,25 @@
+
+#script to generate descriptive statistics charts
 #%% IMPORTS
 import geopandas as gp
 import plotly.express as px
 import numpy as np
 import os
 
+#%% CREATE FOLDER
 if not os.path.exists('descriptive_statistics'):
     os.mkdir('descriptive_statistics')
+
 #%% DATA
 streetTrees = gp.read_file('data_created/street_trees.gpkg')
 
 #%% CONSTRUCTION OF ADDITIONAL COLUMNS
-#calculate frequency of genus
 streetTrees['freq_genus'] = streetTrees.groupby('genus')['genus'].transform('count')
-#renaming genus summing those with small frequencies
+
 streetTrees['genus_large'] = streetTrees['genus']
 streetTrees.loc[streetTrees['freq_genus'] < 100, 'genus_large'] = 'Other genera'
-#generating column for later use in frequency graphs
+
 streetTrees['single_tree'] = 1
-
-#%% PIE CHART: GENUS FREQUENCY
-pieGenusFreq = px.pie(streetTrees, 
-    values = 'single_tree', 
-    names = 'genus_large', 
-    title = 'Distribution of Tree Genus')
-
-pieGenusFreq.show()
-
-#%% PIE CHART: FREQUENCY OF 'OTHER genus' TREE GENUS
-streetTreesOthergenus = streetTrees.loc[streetTrees['genus_large'] == 'Other genus']
-
-pieOtherGenusFreq = px.pie(streetTreesOthergenus, 
-    values = 'single_tree', 
-    names = 'genus')
-
-pieOtherGenusFreq.show()
 
 #%% BAR CHART OF TREE GENUS
 streetTreesGroupInsignificantGenus = streetTrees.groupby('genus_large').sum().reset_index()
@@ -58,6 +44,7 @@ barGenusFreq = barGenusFreq.update_yaxes(tickvals=[0, 1000, 2000, 3000, 4000, 50
 barGenusFreq.show()
 
 barGenusFreq.write_image('descriptive_statistics/barGenusFreq.png', scale = 5)
+
 #%% CREATE BAR CHART OF ALLERGENECITY
 streetTreesAllergenecity = streetTrees.groupby('allergenecity_index').sum().reset_index()
 
@@ -76,7 +63,7 @@ barAllergenecityFreq.show()
 
 barAllergenecityFreq.write_image('descriptive_statistics/barAllergenecityFreq.png', scale = 5)
 
-#%% ALLERGENECITY .CSV
+#%% ALLERGENECITY TABLE .CSV
 streetTreesAllergenecity = streetTrees.groupby('allergenecity_index').sum().reset_index()
 
 streetTreesAllergenecity = streetTreesAllergenecity.drop('freq_genus', axis = 1).rename(columns = {'single_tree':'count'})

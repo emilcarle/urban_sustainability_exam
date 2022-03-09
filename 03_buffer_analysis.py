@@ -1,9 +1,7 @@
+
+#script to generate 500m buffers around street trees by genera
 #%% IMPORTS
 import geopandas as gp
-from geocube.api.core import make_geocube
-from osgeo import gdal, ogr
-import rasterio
-from rasterio import features
 
 #%% DATA
 streetTrees = gp.read_file('data_created/street_trees.gpkg')
@@ -107,50 +105,5 @@ buffersSorbus.to_file('data_created/buffersSorbus.gpkg')
 buffersTilia.to_file('data_created/buffersTilia.gpkg')
 buffersUlmus.to_file('data_created/buffersUlmus.gpkg')
 
-#%% COUNTLESS LOOSE ATTEMPTS AT RASTERIZING
-buffersBetula = treeBuffersGenusGroup.loc[treeBuffersGenusGroup['genus'] == 'Betula']
-
-buffersBetula.to_file('data_created/buffer_betula.gpkg')
-
-boundariesDissolved = boundaries.dissolve()
-
-baseRaster = make_geocube(
-    boundariesDissolved,
-    fill = 0,
-    resolution=(10, -10)
-)
-
-baseRaster.rio.to_raster('data_created/base_raster.geotiff')
-
-treeBuffersGenusGroup = treeBuffersGenusGroup.reset_index()
-
-buffersBetula = treeBuffersGenusGroup.loc[treeBuffersGenusGroup['genus'] == 'Betula']
-
-betuleRaster = make_geocube(
-    buffersBetula,
-    measurements = ['allergenecity_index'],
-    resolution=(10, -10)
-)
-
-out_grid = make_geocube(
-    vector_data=buffersBetula,
-    measurements=['allergenecity_index'],
-    resolution=(-1, 1)
-)
-
-out_grid['allegenecity_index'].rio.to_raster('data_created/allergenecity.tiff')
-
-treeBuffersGenusGroup = treeBuffersGenusGroup.reset_index()
-buffersBetula = treeBuffersGenusGroup.loc[treeBuffersGenusGroup['genus'] == 'Betula']
-
-rst = rasterio.open('data_created/baseRaster.tif')
-
-out_fn = './rasterized.tif'
-
-with rasterio.open(out_fn, 'w+') as out:
-    out_arr = out.read(1)
-
-    shapes = ((geom,value) for geom, value in zip(buffersBetula.geometry, buffersBetula.allergenecity_index))
-
-    burned = features.rasterize(shapes=shapes, fill=0, out=out_arr, transform=out.transform)
-    out.write_band(1, burned)
+#rasterization and summing of all buffer rasters is performed in QGIS after running this script
+#for further information refer to the the methods section of the final paper

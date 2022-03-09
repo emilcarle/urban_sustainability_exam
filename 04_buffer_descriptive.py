@@ -1,7 +1,8 @@
+
+#script to create a bar chart of area coverage of allergenicity index values in the city of Copenhagen
 #%% IMPORTS
 import pandas as pd
 import plotly.express as px
-import rasterio as rio
 import rioxarray
 
 #%% DATA TO DATAFRAME
@@ -40,7 +41,3 @@ barIndexArea = barIndexArea.update_xaxes(tickvals=[0, 5, 10, 15, 20, 25, 30, 35,
 barIndexArea.show()
 
 barIndexArea.write_image('descriptive_statistics/barIndexArea.png', width = 1000, scale = 5)
-
-
-
-
